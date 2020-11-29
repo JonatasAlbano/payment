@@ -4,6 +4,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,9 @@ import com.joalbano.payment.services.SaleService;
 @RestController
 @RequestMapping("/sale")
 public class SaleController {
+	
+	@Value("${server.port}")
+	String port;
 	
 	@Autowired
 	private SaleService saleService;
@@ -64,6 +68,11 @@ public class SaleController {
 		SaleDTO createSale = saleService.create(saleDTO);
 		createSale.add(linkTo(methodOn(SaleController.class).findById(saleDTO.getId())).withSelfRel());
 		return createSale;
+	}
+	
+	@GetMapping("/showPort")
+	public String showPort() {
+		return port;
 	}
 
 }
